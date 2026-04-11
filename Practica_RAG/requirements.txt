@@ -1,0 +1,13 @@
+llama-index-readers-file
+pymupdf
+llama-index-core
+llama-index-vector-stores-postgres
+llama-index-embeddings-huggingface
+llama-index-llms-llama-cpp; python_version < "3.13"
+sentence-transformers
+llama-cpp-python; python_version < "3.13"
+psycopg2-binary
+pgvector
+asyncpg
+sqlalchemy[asyncio]
+greenlet

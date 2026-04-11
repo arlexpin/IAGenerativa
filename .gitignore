@@ -1,0 +1,11 @@
+# Python virtual environments
+.venv/
+env/
+
+# Project-specific virtual envs
+Practica_RAG/.venv/
+Practica_Generacion/env/
+
+# Python cache artifacts
+__pycache__/
+*.py[cod]
