@@ -1,0 +1,12 @@
+[
+  {"id": "EM-901", "cliente": "Beatriz Pinzón", "estado": "Entregado", "fecha": "2026-04-01", "detalles": "Recibido en portería"},
+  {"id": "EM-902", "cliente": "Nicolás Mora", "estado": "En Bodega", "fecha": "N/A", "detalles": "Control de calidad de empaque ecológico"},
+  {"id": "EM-903", "cliente": "Daniel Valencia", "estado": "Enviado", "fecha": "2026-04-12", "detalles": "En centro de distribución Cali"},
+  {"id": "EM-904", "cliente": "Marcela Valencia", "estado": "Retrasado", "fecha": "2026-04-15", "detalles": "Derrumbe en la vía al Mar"},
+  {"id": "EM-905", "cliente": "Patricia Fernández", "estado": "Cancelado", "fecha": "N/A", "detalles": "Falla en la pasarela de pagos"},
+  {"id": "EM-906", "cliente": "Hugo Lombardi", "estado": "Entregado", "fecha": "2026-04-05", "detalles": "Entregado personalmente"},
+  {"id": "EM-907", "cliente": "Mario Calderón", "estado": "Enviado", "fecha": "2026-04-11", "detalles": "Ruta nacional hacia Bogotá"},
+  {"id": "EM-908", "cliente": "Freddy Stewart", "estado": "En Bodega", "fecha": "N/A", "detalles": "Pendiente por recolección de mensajería"},
+  {"id": "EM-909", "cliente": "Aura María Fuentes", "estado": "Enviado", "fecha": "2026-04-13", "detalles": "Saliendo de bodega Jamundí"},
+  {"id": "EM-910", "cliente": "Sandra Patiño", "estado": "Entregado", "fecha": "2026-04-09", "detalles": "Recibido por familiar"}
+]
