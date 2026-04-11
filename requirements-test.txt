@@ -1,0 +1,2 @@
+-r Practica_Generacion/requirements.txt
+-r Practica_RAG/requirements.txt

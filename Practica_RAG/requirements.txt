@@ -1,11 +1,11 @@
-llama-index-readers-file
+llama-index-readers-file==0.3.0
 pymupdf
-llama-index-core
-llama-index-vector-stores-postgres
-llama-index-embeddings-huggingface
-llama-index-llms-llama-cpp; python_version < "3.13"
-sentence-transformers
-llama-cpp-python; python_version < "3.13"
+llama-index-core==0.11.2
+llama-index-vector-stores-postgres==0.2.6
+llama-index-embeddings-huggingface==0.3.1
+llama-index-llms-llama-cpp; python_version < "3.13" and platform_system != "Windows"
+sentence-transformers==5.4.0
+llama-cpp-python; python_version < "3.13" and platform_system != "Windows"
 psycopg2-binary
 pgvector
 asyncpg
