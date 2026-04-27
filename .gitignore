@@ -5,6 +5,7 @@ env/
 # Project-specific virtual envs
 Practica_RAG/.venv/
 Practica_Generacion/env/
+.venv312/
 
 # Python cache artifacts
 __pycache__/
