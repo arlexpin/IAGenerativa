@@ -1,0 +1,11 @@
+id,nombre,categoria,stock,precio,descripcion,atributo_ecologico
+PROD-001,Termo de acero inoxidable 500ml,Accesorios,45,35000,Termo reutilizable para bebidas calientes y frías. Material ecológico,Acero reciclable
+PROD-002,Chaqueta de algodón orgánico,Ropa,12,89900,Chaqueta ligera de algodón 100% orgánico. Producto ecológico,Sin pesticidas
+PROD-003,Cepillo de bambú,Higiene personal,78,12900,Cepillo dental ecológico con cerdas de carbón activado. Completamente biodegradable,Biodegradable
+PROD-004,Shampoo sólido neutro,Higiene personal,23,24500,Shampoo sin plástico para todo tipo de cabello. Barra sólida que dura meses,Zero waste
+PROD-005,Semillas de albahaca,Perecederos,150,8900,Kit de semillas orgánicas para huerto casero,Producción local
+PROD-006,Mochila de cáñamo,Accesorios,8,127900,Mochila impermeable de fibra de cáñamo sostenible. Resistente y duradera,Resistente y sostenible
+PROD-007,Jabón líquido de avena,Higiene personal,34,18900,Jabón en envase de vidrio retornable. Modelo de economía circular,Circular
+PROD-008,Manzanas deshidratadas,Perecederos,0,15900,Bolsa de 200g de manzana orgánica liofilizada. Comercio justo. STOCK AGOTADO,Comercio justo
+PROD-009,Blusa de lyocell,Ropa,19,68900,Blusa holgada con tela de fibras de eucalipto. Proceso de bajo impacto ambiental,Proceso de bajo impacto
+PROD-010,Foco LED solar,Hogar,56,45900,Foco recargable con panel solar integrado. Eficiencia energética y cero consumo de electricidad,Eficiencia energética

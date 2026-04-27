@@ -1,41 +1,81 @@
 # Taller 2 – Fase 3: Integración y Ejecución del Código
 
-# Taller 2 – Fase 3: Integración y Ejecución del Código (Respuesta Completa)
-
 ## Contexto
-En esta fase se implementa un sistema RAG (Generación Aumentada por Recuperación) completo para EcoMarket, utilizando exclusivamente herramientas locales: **Ollama** con el modelo **Llama 3.1 8B** (el mismo usado en los talleres anteriores), **LangChain** y **ChromaDB** como base de datos vectorial. El objetivo es que el asistente responda preguntas basándose en los documentos internos de la empresa, evitando alucinaciones.
+En esta fase se implementa un sistema RAG (Generación Aumentada por Recuperación) completo para EcoMarket, utilizando exclusivamente herramientas locales: **Ollama** con el modelo **Llama 3.1 8B**, **LangChain**, **ChromaDB** como base de datos vectorial y **HuggingFace embeddings** para la vectorización de documentos. El objetivo es que el asistente responda preguntas basándose en los documentos internos de la empresa, evitando alucinaciones.
 
-## 1. Estructura del Repositorio en GitHub
+## 1. Mejoras Implementadas en la Configuración
 
+### Optimización del Chunking
+Para mejorar significativamente la calidad de recuperación de información:
+- **Chunk size reducido**: de 512 a **256 tokens** (≈ 200 palabras en español)
+- **Overlap aumentado**: mantiene **64 tokens** de solapamiento (ahora 25% del chunk vs 12.5% anterior)
 
+**Razón**: Los documentos de EcoMarket contienen respuestas claras y concisas en FAQs y políticas. El tamaño de chunk más pequeño evita dilución de información relevante y mejora la recuperación semántica.
+
+### Documentos Enriquecidos
+Se han expandido los archivos base para mejorar la recuperación:
+
+1. **politicas_ecomarket.txt**: Ahora estructurado en secciones claras
+   - Plazo de devolución: **30 días** (explícito)
+   - Productos no elegibles: Alimentos, perecederos (explícito)
+   - Métodos de pago (nueva sección)
+
+2. **faqs.json**: Añadidas preguntas críticas
+   - "¿Cuánto tiempo tengo para devolver un producto?"
+   - "¿Aceptan devolución de alimentos?"
+   - "¿Qué productos ecológicos tienen en inventario?"
+
+3. **inventario_productos.csv**: Descripciones expandidas
+   - Palabras clave ecológicas integradas en descripciones
+
+## 2. Estructura del Repositorio
+
+```
+Proyecto/Taller_2/
 ├── requirements.txt
-├── datos/
-│ └── politicas_ecomarket.txt
-├── scripts/
-│ └── rag_llama3.1.py
-└── notebooks/
-└── demo_rag.ipynb
+├── Fase_1.md
+├── Fase_2.md
+├── Fase_3.md
+├── demo_rag_actualizado.ipynb
+├── data/
+│   ├── politicas_ecomarket.txt
+│   ├── faqs.json
+│   └── inventario_productos.csv
+└── scripts/
+    └── rag_llama3.1.py
+```
 
+## 3. Requisitos
 
-## 2. Archivos del Sistema
-
-Sistema RAG para atención al cliente usando Ollama + Llama 3.1 8B.
-
-## Requisitos
 - Ollama instalado y en ejecución
-- Modelo `llama3.1:8b` descargado: `ollama pull llama3.1:8b`
+- Modelo `llama3.1:8b`: `ollama pull llama3.1:8b`
 - Python 3.8+
 
-## Instalación
+## 4. Instalación
+
+```bash
 pip install -r requirements.txt
+```
 
-## Ejecución
-cd scripts && python rag_llama3.1.py
+## 5. Ejecución
 
-## 3. Adaptación del Taller Práctico #1 (sin RAG) a este sistema
+### Modo interactivo (recomendado)
+```bash
+cd scripts
+python rag_llama3.1.py --rebuild
+```
 
-En el taller anterior se usaba directamente Ollama sin contexto:
+### Una sola pregunta
+```bash
+cd scripts
+python rag_llama3.1.py --query "¿Aceptan devolución de alimentos?"
+```
 
-  respuesta = ollama.generate(model="llama3.1:8b", prompt="¿Puedo devolver?")
+## 6. Comparativa de Resultados (Antes y Después)
 
-Con RAG (este script), se añade la recuperación de documentos para enriquecer el prompt. No es necesario cambiar el modelo; solo se añade la capa de búsqueda vectorial. El LLM sigue siendo el mismo llama3.1:8b.
+| Pregunta | Antes | Después |
+|----------|-------|---------|
+| ¿Cuánto tiempo tengo para devolver un producto? | No tengo información... | Tienes 30 días desde la fecha de compra |
+| ¿Aceptan devolución de alimentos? | Lo siento, pero no hay información... | No. Los produtos perecederos NO son elegibles |
+| ¿Qué métodos de pago aceptan? | ✅ Tarjetas de crédito, Mercado Pago... | ✅ Tarjetas de crédito, Mercado Pago... |
+| ¿Qué productos ecológicos tienen? | No tengo información... | Termo de acero, Chaqueta de algodón, Cepillo de bambú... |

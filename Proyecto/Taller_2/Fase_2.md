@@ -5,29 +5,31 @@ Un sistema RAG solo es tan bueno como la información que puede recuperar. En es
 
 ---
 
-## 1. Identificación de Documentos (mínimo 3 tipos)
+## 1. Identificación de Documentos
 
-Para cubrir las consultas más frecuentes de los clientes de EcoMarket, se incluirán los siguientes documentos:
+El sistema RAG de EcoMarket se construirá con los siguientes documentos, que cubren las consultas más comunes:
 
-| Tipo de documento | Formato | Contenido clave | Utilidad en RAG |
-|------------------|---------|----------------|------------------|
-| **Política de devoluciones y garantías** | PDF | Plazos (15 días), productos excluidos (higiene, perecederos), proceso de reembolso, condiciones de empaque. | Responder preguntas sobre devoluciones, cambios y garantías. |
-| **Inventario de productos** | CSV / Excel | Nombre, categoría, stock, precio, atributos ecológicos (material reciclado, biodegradable), proveedor. | Consultas de disponibilidad, precios y características sostenibles. |
-| **Preguntas frecuentes (FAQs)** | JSON / Markdown | Respuestas estandarizadas sobre: tiempos de envío, seguimiento de pedidos, métodos de pago, contacto con soporte humano. | Resolver dudas comunes sin necesidad de inferencia compleja. |
-
-### Documentos adicionales (opcionales pero recomendados)
-- **Manual de servicio al cliente** (PDF) → para casos límite y escalamientos.
-- **Logística de envíos** (JSON con estados reales) → para consultas de tracking en tiempo real (integración con API).
-
----
+| Tipo | Formato | Nombre de archivo (ejemplo) | Contenido esencial |
+|------|---------|----------------------------|--------------------|
+| **Política de devoluciones** | TXT | `politicas_ecomarket.txt` | Plazos, condiciones, productos excluidos (higiene, perecederos) |
+| **Inventario de productos** | CSV | `inventario_productos.csv` | ID, nombre, categoría, stock, precio, descripción, atributo ecológico |
+| **Preguntas frecuentes** | JSON | `faqs.json` | Pregunta-respuesta sobre envíos, pagos, seguimiento de pedidos |
 
 ## 2. Estrategia de Segmentación (Chunking)
 
 ### Decisión adoptada
 **Segmentación recursiva por tamaño variable con solapamiento (RecursiveCharacterTextSplitter)**  
-- Tamaño del chunk: **512 tokens** (≈ 400 palabras en español).  
-- Solapamiento (overlap): **64 tokens** (12.5 %).  
+- Tamaño del chunk: **256 tokens** (≈ 200 palabras en español) — reducido para mejorar recuperación de información concisa en FAQs y políticas.  
+- Solapamiento (overlap): **64 tokens** (25 % del chunk) — aumentado para mantener contexto crítico en límites de fragmentos.  
 - Separadores: `["\n\n", "\n", ".", " ", ""]` (prioriza respetar párrafos, luego oraciones, luego palabras).
+
+### Optimización para EcoMarket
+La reducción de tamaño de chunk de 512 a 256 tokens mejora significativamente:
+- **Recuperación de FAQs**: Las preguntas frecuentes y sus respuestas consistentes se mantienen intactas en un solo chunk.
+- **Políticas claras**: Secciones numeradas de políticas se recuperan sin dilución de ruido.
+- **Relevancia aumentada**: El LLM recibe contexto más enfocado, mejorando la precisión de respuestas.
+
+El overlap incrementado (64 tokens = 25 %) asegura que información crítica en límites se incluya en múltiples chunks para mejor recuperación semántica, evitando cortes de frases importantes.
 
 ### Justificación
 
@@ -43,7 +45,7 @@ EcoMarket maneja documentos heterogéneos:
 - **CSV** → cada fila es una entrada independiente.
 - **JSON** → estructuras anidadas.
 
-El splitter recursivo intenta primero dividir por párrafos (`\n\n`). Si un párrafo excede 512 tokens, divide por oraciones (`.`). Si aún es muy largo, divide por palabras. Esto **preserva la coherencia semántica** mucho mejor que una división fija por caracteres.
+El splitter recursivo intenta primero dividir por párrafos (`\n\n`). Si un párrafo excede 256 tokens, divide por oraciones (`.`). Si aún es muy largo, divide por palabras. Esto **preserva la coherencia semántica** mucho mejor que una división fija por caracteres.
 
 #### c) ¿Por qué solapamiento (overlap)?
 Evita la pérdida de contexto en los límites de los fragmentos.  
@@ -61,8 +63,6 @@ Sin solapamiento, la excepción podría quedar en un fragmento diferente al de l
 | **Recursiva + overlap (elegida)** | Equilibrio entre coherencia y tamaño; adaptable a formatos mixtos | Ligeramente más costosa computacionalmente (insignificante). |
 | **Semántica (con NLP)** | Ideal para documentos muy largos | Compleja de implementar; requiere modelos adicionales. |
 
----
-
 ## 3. Proceso de Indexación
 
 Una vez definidos los documentos y la estrategia de chunking, se sigue este flujo para construir el índice vectorial:
@@ -70,8 +70,8 @@ Una vez definidos los documentos y la estrategia de chunking, se sigue este fluj
 ### Paso a paso
 
 1. **Carga de documentos**  
-   - PDF → `PyPDFLoader` (LangChain)  
-   - CSV → `csv.DictReader`  
+   - TXT → `Document` (LangChain)  
+   - CSV → `Document` (LangChain)  
    - JSON → `json.load`
 
 2. **Limpieza y normalización**  
@@ -100,7 +100,7 @@ from langchain_community.vectorstores import Chroma
 
 # Configuración
 splitter = RecursiveCharacterTextSplitter(
-    chunk_size=512,
+    chunk_size=256,
     chunk_overlap=64,
     separators=["\n\n", "\n", ".", " ", ""]
 )
