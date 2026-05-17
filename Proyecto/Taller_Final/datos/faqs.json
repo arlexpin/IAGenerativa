@@ -1,0 +1,42 @@
+[
+  {
+    "pregunta": "¿Cuánto tardan los envíos?",
+    "respuesta": "Envíos a Cali: 2 días hábiles. Resto de Colombia: 3-5 días hábiles."
+  },
+  {
+    "pregunta": "¿Qué métodos de pago aceptan?",
+    "respuesta": "Tarjetas de crédito, Mercado Pago, transferencia bancaria."
+  },
+  {
+    "pregunta": "¿Cómo cambio mi dirección de envío?",
+    "respuesta": "Contacta a soporte dentro de las 2 horas posteriores a la compra."
+  },
+  {
+    "pregunta": "¿Puedo cancelar un pedido?",
+    "respuesta": "Sí, si aún no ha sido enviado."
+  },
+  {
+        "pregunta": "¿Cuánto tiempo tengo para devolver un producto?",
+        "respuesta": "Tienes 30 días desde la fecha de compra para devolver un producto. El artículo debe estar sin usar, en su embalaje original y en las mismas condiciones en que lo recibiste."
+    },
+    {
+        "pregunta": "¿Aceptan devolución de alimentos?",
+        "respuesta": "No. Los productos perecederos, como alimentos, bebidas y flores, NO son elegibles para devolución. Esto se debe a que no podemos garantizar las condiciones de almacenamiento y calidad del producto."
+    },
+    {
+        "pregunta": "¿Cuánto tardan los envíos?",
+        "respuesta": "Los envíos a Cali tardan 2 días hábiles. A otras ciudades de Colombia, entre 3 y 5 días hábiles."
+    },
+    {
+        "pregunta": "¿Qué métodos de pago aceptan?",
+        "respuesta": "Aceptamos tarjetas de crédito (Visa, Mastercard), Mercado Pago, y transferencia bancaria."
+    },
+    {
+        "pregunta": "¿Puedo cambiar un producto?",
+        "respuesta": "Sí, tienes 15 días desde la entrega. El producto debe estar sin usar y en su empaque original. No aplica para productos de higiene personal o perecederos abiertos."
+    },
+    {
+        "pregunta": "¿Qué productos ecológicos tienen en inventario?",
+        "respuesta": "EcoMarket ofrece una amplia variedad de productos ecológicos: Termo de acero reciclable, Chaqueta de algodón orgánico, Cepillo de bambú biodegradable, Shampoo sólido zero waste, Mochila de cáñamo sostenible, Jabón líquido circular, Blusa de lyocell de bajo impacto, Foco LED solar, y más. Todos nuestros productos tienen atributos ecológicos específicos."
+    }
+]

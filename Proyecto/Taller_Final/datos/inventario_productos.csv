@@ -1,0 +1,11 @@
+id,nombre,categoria,stock,precio,descripcion,atributo_ecologico
+PROD-001,Termo acero inoxidable,Accesorios,45,35000,Termo reutilizable,Acero reciclable
+PROD-002,Chaqueta algodón orgánico,Ropa,12,89900,Chaqueta ligera,100% orgánico
+PROD-003,Cepillo bambú,Higiene personal,78,12900,Cepillo dental carbón activado,Biodegradable
+PROD-004,Shampoo sólido,Higiene personal,23,24500,Shampoo sin plástico,Zero waste
+PROD-005,Semillas albahaca,Perecederos,150,8900,Kit de semillas orgánicas,Producción local
+PROD-006,Mochila cáñamo,Accesorios,8,127900,Mochila impermeable,Fibra de cáñamo
+PROD-007,Jabón líquido avena,Higiene personal,34,18900,Envase de vidrio retornable,Circular
+PROD-008,Manzanas deshidratadas,Perecederos,0,15900,Bolsa 200g liofilizada,Comercio justo
+PROD-009,Blusa lyocell,Ropa,19,68900,Fibras de eucalipto,Bajo impacto
+PROD-010,Foco LED solar,Hogar,56,45900,Recargable con panel solar,Eficiencia energética
