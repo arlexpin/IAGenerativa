@@ -5,11 +5,17 @@ import os
 # Añadir ruta para importar módulos
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src.base_conocimiento import ensure_vectorstore
 from src.agente_devoluciones import ejecutar_agente
 
 st.set_page_config(page_title="Asistente EcoMarket", page_icon="🔄")
 st.title("🔄 Agente de Devoluciones - EcoMarket")
 st.markdown("Pregunta sobre políticas, inicia una devolución o consulta el inventario.")
+
+if "vectorstore_ready" not in st.session_state:
+    with st.spinner("Indexando base de conocimiento (carpeta datos)..."):
+        ensure_vectorstore()
+    st.session_state.vectorstore_ready = True
 
 # Inicializar historial
 if "messages" not in st.session_state:

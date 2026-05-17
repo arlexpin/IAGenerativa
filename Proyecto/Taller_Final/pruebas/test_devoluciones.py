@@ -3,7 +3,13 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.herramientas import verificar_elegibilidad, generar_etiqueta_devolucion
-from src.agente_devoluciones import parse_return_request, fallback_return_flow
+from src.agente_devoluciones import (
+    parse_return_request,
+    fallback_return_flow,
+    es_conversacion_casual,
+    ejecutar_agente,
+    responder_devolucion_producto,
+)
 
 
 def test_verificar_elegibilidad_higiene_sin_usar():
@@ -40,6 +46,25 @@ def test_parse_return_request_full():
     assert parsed['estado_producto'] == 'sin usar'
 
 
+def test_es_conversacion_casual_hola():
+    assert es_conversacion_casual("Hola") is True
+    assert es_conversacion_casual("Hola, ¿cómo estás?") is True
+    assert es_conversacion_casual("¿Cuál es la política de devoluciones?") is False
+
+
+def test_responder_devolucion_semillas_albahaca():
+    respuesta = responder_devolucion_producto("¿Puedo devolver unas semillas de albahaca?")
+    assert respuesta is not None
+    assert "No" in respuesta or "no" in respuesta
+    assert "pereceder" in respuesta.lower() or "PROD-005" in respuesta
+
+
+def test_ejecutar_agente_saludo():
+    respuesta = ejecutar_agente("Hola")
+    assert "EcoMarket" in respuesta
+    assert "asesor humano te contactará" not in respuesta.lower()
+
+
 def test_fallback_flow_complete():
     texto = 'Mi pedido EM-904, devolver PROD-003, direccion Calle 123'
     out = fallback_return_flow(texto)
@@ -54,6 +79,9 @@ if __name__ == '__main__':
         test_verificar_elegibilidad_perecedero,
         test_generar_etiqueta,
         test_parse_return_request_full,
+        test_es_conversacion_casual_hola,
+        test_responder_devolucion_semillas_albahaca,
+        test_ejecutar_agente_saludo,
         test_fallback_flow_complete,
     ]
     failed = 0
