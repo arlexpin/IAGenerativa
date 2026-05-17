@@ -96,10 +96,8 @@ def parse_return_request(text: str) -> dict:
         "estado_producto": None,
     }
     texto = text.replace("\n", " ")
-    producto_match = re.search(r"(PROD[-_]?
-\d+)", texto, re.IGNORECASE)
-    pedido_match = re.search(r"(EM[-_]?
-\d+)", texto, re.IGNORECASE)
+    producto_match = re.search(r"(PROD[-_]?\d+)", texto, re.IGNORECASE)
+    pedido_match = re.search(r"(EM[-_]?\d+)", texto, re.IGNORECASE)
     direccion_match = re.search(r"direcci[oó]n(?:\s*[:\-]?\s*)([^,\.]+)", texto, re.IGNORECASE)
     estado_match = re.search(r"(sin usar|sin abrir|usado|nuevo|dañado)", texto, re.IGNORECASE)
     if producto_match:
@@ -163,10 +161,15 @@ tools = [
 
 
 # Prompt ReAct mejorado
-agent_prompt = PromptTemplate.from_template("""
+agent_prompt = PromptTemplate(
+    template="""
 Eres un asistente especializado en devoluciones para EcoMarket.
 
 Dispones SOLO de las herramientas listadas abajo. Sigue el protocolo EXACTO ReAct a continuación y no añadas texto fuera del formato.
+
+Herramientas disponibles:
+{tools}
+Nombres de herramienta válidos: {tool_names}
 
 Formato REQUERIDO (respeta mayúsculas y dos puntos exactamente):
 
@@ -207,13 +210,20 @@ Herramienta JSON schema (ejemplos de Action Input):
 
 Question: {input}
 {agent_scratchpad}
-""")
+""",
+    input_variables=["input", "agent_scratchpad", "tools", "tool_names"]
+)
 
 
 # 5. Crear agente
-agent = create_react_agent(llm, tools, agent_prompt)
-# Reducimos iteraciones para evitar bucles y permitimos manejo de parsing
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False, handle_parsing_errors=True, max_iterations=2)
+try:
+    agent = create_react_agent(llm, tools, agent_prompt)
+    # Reducimos iteraciones para evitar bucles y permitimos manejo de parsing
+    agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False, handle_parsing_errors=True, max_iterations=2)
+except Exception as e:
+    agent = None
+    agent_executor = None
+    print(f"Warning creating agent: {e}")
 
 
 def consultar_rag(query: str) -> str:
@@ -223,12 +233,17 @@ def consultar_rag(query: str) -> str:
 
 def ejecutar_agente(entrada_usuario: str) -> str:
     try:
-        respuesta = agent_executor.invoke({"input": entrada_usuario})
-        raw_output = normalize_agent_response(respuesta)
-        output = clean_agent_output(raw_output)
-        if is_invalid_agent_response(output):
-            raise ValueError("Respuesta del agente inválida")
-        return output
+        if agent_executor is not None:
+            respuesta = agent_executor.invoke({"input": entrada_usuario})
+            raw_output = normalize_agent_response(respuesta)
+            output = clean_agent_output(raw_output)
+            if is_invalid_agent_response(output):
+                raise ValueError("Respuesta del agente inválida")
+            return output
+        # Si el agente no está disponible (por ejemplo durante tests), usar fallback o RAG
+        if es_solicitud_devolucion(entrada_usuario):
+            return fallback_return_flow(entrada_usuario)
+        return consultar_rag(entrada_usuario)
     except Exception:
         if es_solicitud_devolucion(entrada_usuario):
             return fallback_return_flow(entrada_usuario)
